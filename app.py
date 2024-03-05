@@ -8,7 +8,7 @@ def load_data(url):
     data = pd.read_csv(url)
     return data
 
-data_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQnxMS3my42BtJpFyxl1A0y9fYN7HiBB7tnjEOzPQ528okNH88F_Ad6KHXPdPbboV613m1A-z7DbpbO/pub?output=csv"
+data_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRo1MjHowZ5xD7-mm2zROZuJWO9yS7AYINyXWnBfnrTN1eUAlmwI9127AvB32X_rLWyBApUz9LtakcG/pub?output=csv"
 df = load_data(data_url)
 
 # split to two dataframes by language
@@ -37,6 +37,9 @@ df = df.sort_values(by='Timestamp')
 
 # remove Name (Optional)
 df = df.drop(columns=["Name (Optional)"])
+
+# remove last column
+df = df.iloc[:, :-1]
 
 # Display each column with an appropriate visualization
 for column in df.columns:
