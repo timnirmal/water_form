@@ -11,6 +11,33 @@ def load_data(url):
 data_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQnxMS3my42BtJpFyxl1A0y9fYN7HiBB7tnjEOzPQ528okNH88F_Ad6KHXPdPbboV613m1A-z7DbpbO/pub?output=csv"
 df = load_data(data_url)
 
+# split to two dataframes by language
+df_en = df[df['Choose your language'] == 'English']
+df_si = df[df['Choose your language'] == 'Sinhala']
+
+# from df_en drop all columns after 71
+df_en = df_en.drop(df_en.columns[71:], axis=1)
+# from df_si keep all the column after 71
+df_si = df_si.drop(df_si.columns[2:71], axis=1)
+
+# get length of the dataframes (number of columns)
+if len(df_en.columns) == len(df_si.columns):
+    print("Number of columns are equal")
+else:
+    print("Number of columns are not equal")
+
+# now merge the two dataframes but first we need to rename the columns of the second dataframe
+df_si.columns = df_en.columns
+
+# merge the two dataframes
+df = pd.concat([df_en, df_si])
+
+# sort by timestamp
+df = df.sort_values(by='Timestamp')
+
+# remove Name (Optional)
+df = df.drop(columns=["Name (Optional)"])
+
 # Display each column with an appropriate visualization
 for column in df.columns:
     st.write(f"## {column}")  # Display the column name as a header
